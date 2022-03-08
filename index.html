@@ -1,1 +1,181 @@
-<h1>Test</h1>
+<!doctype html>
+<html>
+	<head>
+		<title>Terminal Interpreter</title>
+		<link rel="stylesheet" href="css/xterm.css" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+		<script src="./commands/commands.js"></script>
+
+		<!-- Favicons -->
+		<link href="assets/icon.png" rel="icon">
+		<link href="assets/icon.png" rel="apple-touch-icon">
+
+		<!-- Shhh we don't talk about this-->
+		<span hidden id="ip"></span> <!-- Storage for public ip -->
+	</head>
+	<body>
+		<div id="terminal"></div>
+		<script>
+
+
+
+			function sleep(ms) {
+				return new Promise(resolve => setTimeout(resolve, ms));
+			}
+
+			$.getJSON('https://api.ipify.org/?format=json', async function(data) {
+				ip = JSON.stringify(data.ip, null, 2);
+				$("#ip").text(ip.replace(/"/g, ""));
+			});
+
+			var term = new Terminal({
+				//fontFamily: 'Comic Sans MS',
+				fontSize: 16,
+				rows: 40,
+				cols: 140,
+				customGlyphs: true,
+				cursorBlink: true,
+				cursorStyle: "underline",
+				drawBoldTextInBrightColors: true,
+				letterSpacing: 0,
+				theme: {
+					"black": "#706e86",
+					"red": "#eb6f92",
+					"green": "#9ccfd8",
+					"yellow": "#f6c177",
+					"blue": "#31748f",
+					"purple": "#c4a7e7",
+					"cyan": "#ebbcba",
+					"white": "#e0def4",
+					"brightBlack": "#706e86",
+					"brightRed": "#eb6f92",
+					"brightGreen": "#9ccfd8",
+					"brightYellow": "#f6c177",
+					"brightBlue": "#31748f",
+					"brightPurple": "#c4a7e7",
+					"brightCyan": "#ebbcba",
+					"brightWhite": "#e0def4",
+					"background": "#191724",
+					"foreground": "#e0def4"
+				}
+			});
+
+			function executeCommands(command, args){
+				console.log(command)
+				console.log(args)
+				if (command == 'echo')
+					echo.run(term, args)
+				else if (command == 'help')
+					help.run(term, args)
+				else if (command == 'title')
+					title.run(term, args, document)
+				else
+					term.write("\n\r'" + command + "' is not recognized as an internal command or operable program.")
+			}
+
+			async function runTerminal(){
+				directory = '~'
+				term.writeln('Setting up variables...');
+				i=0;
+				while ($("#ip").text() == ""){
+					await sleep(200);
+					i++;
+					if (i >= 5 && $("#ip").text() == ""){
+						$("#ip").text("127.0.0.1");
+						continue;
+					}
+				}
+				//await sleep(1000); //For Async IP Called Earlier
+				term.clear();
+				promptLine = '\r\x1B[1;0;32m' + $("#ip").text() + '\x1B[1;0;0m@\x1B[1;0;31m' + document.location + '\x1B[1;3;0m:\x1B[1;0;34m' + directory + '\x1B[1;0;0m$ '
+	
+				var command = '';
+				var entries = [];
+				var currPos = 0;
+				var pos = 0;
+				term.open(document.getElementById('terminal'));
+				term.prompt = () => {
+					term.write('\n\r' + command + promptLine);
+				};
+				term.write('Header\n');
+				term.prompt();
+
+
+
+				term.on('key', function(key, ev) {
+					const printable = !ev.altKey && !ev.altGraphKey && !ev.ctrlKey && !ev.metaKey && !(ev.keyCode >= 112 && ev.keyCode <= 143);
+
+					if (ev.keyCode === 13) { // Enter key
+						if (command.replace(/^\s+|\s+$/g, '').length != 0) { // Check if string is all whitespace
+							entries.push(command); // Add command to list
+							currPos = entries.length;
+							
+							args = command.trim().split(/ +/g);
+							commands = args.shift().toLowerCase().replace(/(\r\n|\n|\r)/gm, " ");
+
+							executeCommands(commands, args)
+
+							term.prompt();
+
+						} else {
+							term.write('\n\33[2K' + promptLine + '\u001b[37m');
+						}
+						command = '';
+					} else if (ev.keyCode === 8) { // Backspace
+						if (term.buffer.cursorX > 5) {
+							command = command.slice(0, term.buffer.cursorX - 6) + command.slice(term.buffer.cursorX - 5);
+							
+							//pos = command.length - term.buffer.cursorX + promptLine.length - 18;
+							pos = command.length - term.buffer.cursorX + promptLine.length - 52;
+							command = command.slice(0,-1) //Remove last letter
+							term.write('\33[2K' + promptLine + '\u001b[37m' + command);
+							term.write('\033['.concat(pos.toString()).concat('D')); //term.write('\033[<N>D');
+
+							//if (term.buffer.cursorX == promptLine.length - 18 || term.buffer.cursorX == command.length + promptLine.length - 17)
+							if (term.buffer.cursorX == promptLine.length - 52 || term.buffer.cursorX == command.length + promptLine.length - 51)
+								term.write('\033[1C')
+						}
+					} else if (ev.keyCode === 38) { // Up arrow
+						if (entries.length > 0) {
+							if (currPos > 0) {
+								currPos -= 1;
+							}
+							command = entries[currPos];
+							term.write('\33[2K' + promptLine + '\u001b[37m' + command);
+						}
+					} else if (ev.keyCode === 40) { // Down arrow
+						currPos += 1;
+						if (currPos === entries.length || entries.length === 0) {
+							currPos -= 1;
+							command = '';
+							term.write('\33[2K' + promptLine + '\u001b[37m');
+						} else {
+							command = entries[currPos];
+							term.write('\33[2K' + promptLine + '\u001b[37m' + command);
+						}
+					} else if (printable && !(ev.keyCode === 39 && term.buffer.cursorX > command.length + 4)) {
+						if (ev.keyCode != 37 && ev.keyCode != 39) {
+							var input = ev.key;
+							if (ev.keyCode == 9) { // Tab
+								input = "    ";
+							}
+							pos = command.length - term.buffer.cursorX + 4;
+							command = [command.slice(0, term.buffer.cursorX - 5), input, command.slice(term.buffer.cursorX - 5)].join('');
+							term.write('\33[2K' + promptLine + '\u001b[37m' + command);
+							term.write('\033['.concat(pos.toString()).concat('D')); //term.write('\033[< N > D ');
+						} else {
+							term.write(key);
+						}
+					}
+				});
+			}
+			runTerminal()
+			term.on('paste', function(data) {
+				command += data;
+				term.write(command);
+			});
+		</script>
+	</body>
+</html>
