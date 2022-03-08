@@ -31,10 +31,10 @@
 			});
 
 			const isWindows = ['Windows', 'Win16', 'Win32', 'WinCE'].indexOf(navigator.platform) >= 0;
-			windowsMode: isWindows,
-			
+						
 			var term = new Terminal({
 				//fontFamily: 'Comic Sans MS',
+				windowsMode: isWindows,
 				fontSize: 16,
 				rows: 40,
 				cols: 140,
