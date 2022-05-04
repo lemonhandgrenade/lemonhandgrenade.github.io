@@ -10,8 +10,8 @@
 	<body>
 		<span id="nav">
 			<a href="javascript:loadForm('wand')" class="mainButtons combut">Wands</a>
-			<!-- <a href="javascript:loadForm('potion')" class="mainButtons combut">Potions</a> -->
-		</span>
+			<a href="javascript:loadForm('potion')" class="mainButtons combut">Potions</a>
+		</span><br></br>
 
 		<div id="commandForm"></div>
 
@@ -32,9 +32,106 @@
 					case 'wand':
 						document.getElementById("commandOutput-text").value = generateWand();
 						break;
+					case 'potion':
+						document.getElementById("commandOutput-text").value = generatePotion();
+						break;
 					default:
 						break;
 				}
+			}
+
+			function getPotionColor(color) {
+				output = ""
+				colors = {
+					"black": "#000000",
+					"dark_blue": "#0000AA",
+					"dark_green": "#00AA00",
+					"dark_aqua": "#00AAAA",
+					"dark_red": "#AA0000",
+					"dark_purple": "#AA00AA",
+					"gold": "#FFAA00",
+					"gray": "#AAAAAA",
+					"dark_gray": "#555555",
+					"blue": "#5555FF",
+					"green": "#55FF55",
+					"aqua": "#55FFFF",
+					"red": "#FF5555",
+					"light_purple": "#FF55FF",
+					"yellow": "#FFFF55",
+					"white": "#3F3F3F",
+					"reset": "#3F3F3F",
+					"none": "#3F3F3F"
+				}
+				if (colors[color]) {
+					tryColor = colors[color]
+				} else {
+					tryColor = color
+				}
+				tryColor = tryColor.substring(1)
+				hexR = parseInt(tryColor.substring(0,2), 16)
+				hexG = parseInt(tryColor.substring(2,4), 16)
+				hexB = parseInt(tryColor.substring(4,6), 16)
+				endColor = (hexR << 16) + (hexG << 8) + hexB
+				
+				return endColor
+			}
+
+			function generatePotion() {
+				var name = document.getElementById("name").value ? document.getElementById("name").value : "Potion";
+				var custommodeldata = document.getElementById("custommodeldata").value ? document.getElementById("custommodeldata").value : 154;
+				name = name.replace(/(?:^|\s)\S/g, function(a) { 
+					return a.toUpperCase(); 
+				}).replace(/ /g, '')
+
+
+				elem = document.getElementById('GiveItem0ItemNamecolor')
+				if (elem.value == "Hex Code") {
+					hex = elem.nextSibling
+					color = ",\"color\":\"" + hex.value + "\""
+					colorIn = hex.value
+				} else if (elem.value == "unset") {
+					color = ",\"color\":\"#FF0000\""
+					colorIn = "#FF0000"
+				} else {
+					color = ",\"color\":\"" + elem.value + "\""
+					colorIn = elem.value
+				}
+
+				boldC = document.querySelector('input[name="GiveItem0ItemNamebold"]:checked').value
+				bold = (boldC === "unset") ? "" : (boldC === "true") ? ",\"bold\":true" : ",\"bold\":false"
+				italicC = document.querySelector('input[name="GiveItem0ItemNameitalic"]:checked').value
+				italic = (italicC === "unset") ? ",\"italic\":false" : (italicC === "true") ? ",\"italic\":true" : ",\"italic\":false"
+				underlinedC = document.querySelector('input[name="GiveItem0ItemNameunderlined"]:checked').value
+				underlined = (underlinedC === "unset") ? "" : (underlinedC === "true") ? ",\"underlined\":true" : ",\"underlined\":false"
+				strikethroughC = document.querySelector('input[name="GiveItem0ItemNamestrikethrough"]:checked').value
+				strikethrough = (strikethroughC === "unset") ? "" : (strikethroughC === "true") ? ",\"strikethrough\":true" : ",\"strikethrough\":false"
+				obfuscatedC = document.querySelector('input[name="GiveItem0ItemNameobfuscated"]:checked').value
+				obfuscated = (obfuscatedC === "unset") ? "" : (obfuscatedC === "true") ? ",\"obfuscated\":true" : ",\"obfuscated\":false"
+
+
+
+				arr = []
+				var ingredients = {
+					"none": "None", "abraxan_hair": "Abraxan Hair", "aconite": "Aconite", "acromantula_venom": "Acromantula Venom", "adders_fork": "Adders Fork", "african_red_pepper": "African Red Pepper", "african_sea_salt": "African Sea Salt", "agrippa": "Agrippa", "alcohol": "Alcohol", "alihotsy": "Alihotsy", "angels_trumpet": "Angels Trumpet", "anjelica": "Anjelica", "antimony": "Antimony", "armadillo_bile": "Armadillo Bile", "armotentia": "Armotentia", "arnica": "Arnica", "ashwinder_egg": "Ashwinder Egg", "asian_dragon_hair": "Asian Dragon Hair", "asphodel": "Asphodel", "avocado": "Avocado", "balm": "Balm", "banana": "Banana", "baneberry": "Baneberry", "bat_spleen": "Bat Spleen", "bat_wing": "Bat Wing", "beetle_eye": "Beetle Eye", "belladonna": "Belladonna", "betony": "Betony", "bezoar": "Bezoar", "bezoar_crushed": "Bezoar Crushed", "bezoar_powdered": "Bezoar Powdered", "bicorn_horn": "Bicorn Horn", "billywig_sting": "Billywig Sting", "billywig_sting_slime": "Billywig Sting Slime", "billywig_wings": "Billywig Wings", "bitter_root": "Bitter Root", "blatta_pulvereus": "Blatta Pulvereus", "blind-worms_sting": "Blind-worms Sting", "blood": "Blood", "bloodroot": "Bloodroot", "blowfly": "Blowfly", "bone": "Bone", "boom_berry": "Boom Berry", "boomslang": "Boomslang", "boomslang_skin": "Boomslang Skin", "borage": "Borage", "bouncing_bulb": "Bouncing Bulb", "bouncing_spider_juice": "Bouncing Spider Juice", "bubotuber_pus": "Bubotuber Pus", "bulbadox_juice": "Bulbadox Juice", "bundimun_secretion": "Bundimun Secretion", "bursting_mushroom": "Bursting Mushroom", "butterscotch": "Butterscotch", "camphirated_spirit": "Camphirated Spirit", "castor_oil": "Castor Oil", "cat_hair": "Cat Hair", "caterpillar": "Caterpillar", "centaury": "Centaury", "cheese": "Cheese", "chicken_lips": "Chicken Lips", "chinese_chomping_cabbage": "Chinese Chomping Cabbage", "chizpurfle_carapace": "Chizpurfle Carapace", "chizpurfle_fang": "Chizpurfle Fang", "cinnamon": "Cinnamon", "cockroach": "Cockroach", "corn_starch": "Corn Starch", "cowbane": "Cowbane", "crocodile_heart": "Crocodile Heart", "daisy": "Daisy", "dandelion_root": "Dandelion Root", "dandruff": "Dandruff", "deadlyius": "Deadlyius", "death-cap": "Death-cap", "dittany": "Dittany", "doxy_egg": "Doxy Egg", "dragon_blood": "Dragon Blood", "dragon_claw": "Dragon Claw", "dragon_claw_ooze": "Dragon Claw Ooze", "dragon_dung": "Dragon Dung", "dragon_horn": "Dragon Horn", "dragon_liver": "Dragon Liver", "dragonfly_thorax": "Dragonfly Thorax", "eagle_owl_feather": "Eagle Owl Feather", "eel_eye": "Eel Eye", "erumpent_horn": "Erumpent Horn", "erumpent_tail": "Erumpent Tail", "essence_of_comfrey": "Essence Of Comfrey", "essence_of_daisyroot": "Essence Of Daisyroot", "exploding_fluid": "Exploding Fluid", "exploding_ginger_eyelash": "Exploding Ginger Eyelash", "eye_of_newt": "Eye Of Newt", "eyeball": "Eyeball", "fairy_wing": "Fairy Wing", "fanged_geranium": "Fanged Geranium", "fillet_of_a_fenny_snake": "Fillet Of A Fenny Snake", "fire": "Fire", "fire_seed": "Fire Seed", "firefly": "Firefly", "flabberghasted_leech": "Flabberghasted Leech", "flesh": "Flesh", "flitterby": "Flitterby", "flobberworm_mucus": "Flobberworm Mucus", "flower_head": "Flower Head", "fluxweed": "Fluxweed", "flying_seahorses": "Flying Seahorses", "foxglove": "Foxglove", "frog": "Frog", "frog_brain": "Frog Brain", "galanthus_nivalis": "Galanthus Nivalis", "giant_purple_toad_wart": "Giant Purple Toad Wart", "gillyweed": "Gillyweed", "ginger_root": "Ginger Root", "gnat_heads": "Gnat Heads", "gomas_barbadensis": "Gomas Barbadensis", "goosegrass": "Goosegrass", "granian_hair": "Granian Hair", "graphorn_horn": "Graphorn Horn", "gravy": "Gravy", "griffin_claw": "Griffin Claw", "gulf": "Gulf", "gurdyroot": "Gurdyroot", "haliwinkles": "Haliwinkles", "hellebore": "Hellebore", "hemlock": "Hemlock", "herbaria": "Herbaria", "hermit_crab_shell": "Hermit Crab Shell", "honey": "Honey", "honeywater": "Honeywater", "horklump_juice": "Horklump Juice", "horned_slug": "Horned Slug", "horned_toad": "Horned Toad", "horse_hair": "Horse Hair", "horseradish": "Horseradish", "howlets_wing": "Howlets Wing", "iguana_blood": "Iguana Blood", "infusion_of_wormwood": "Infusion Of Wormwood", "jewelweed": "Jewelweed", "jobberknoll_feather": "Jobberknoll Feather", "kelp": "Kelp", "knarl_quills": "Knarl Quills", "kneazle_hair": "Kneazle Hair", "knotgrass": "Knotgrass", "lacewing_fly": "Lacewing Fly", "ladys_mantle": "Ladys Mantle", "lard": "Lard", "lavender": "Lavender", "leech": "Leech", "leech_juice": "Leech Juice", "left_handed_nazle_powder": "Left Handed Nazle Powder", "lethe_river_water": "Lethe River Water", "lionfish": "Lionfish", "lionfish_spine": "Lionfish Spine", "liver": "Liver", "lizards_leg": "Lizards Leg", "lobalug_venom": "Lobalug Venom", "lovage": "Lovage", "mackled_malaclaw_tail": "Mackled Malaclaw Tail", "mallowsweet": "Mallowsweet", "mandrake": "Mandrake", "mandrake_root": "Mandrake Root", "mandrake,_stewed": "Mandrake, Stewed", "maw": "Maw", "mercury_and_mars": "Mercury And Mars", "mint": "Mint", "mistletoe_berry": "Mistletoe Berry", "mistletoe_berry_crushed": "Mistletoe Berry Crushed", "moly": "Moly", "monkshhod": "Monkshhod", "moondew": "Moondew", "moonseed": "Moonseed", "moonstone": "Moonstone", "morning_dew": "Morning Dew", "motherwort": "Motherwort", "murtlap_tentacle": "Murtlap Tentacle", "mushroom": "Mushroom", "naginis_venom": "Naginis Venom", "neem_oil": "Neem Oil", "nettle": "Nettle", "newt": "Newt", "newt_spleen": "Newt Spleen", "nifflers_fancy": "Nifflers Fancy", "nightshade": "Nightshade", "nux_myristica": "Nux Myristica", "occamy_egg": "Occamy Egg", "octopus_powder": "Octopus Powder", "onion_juice": "Onion Juice", "peacock_feather": "Peacock Feather", "pearl_dust": "Pearl Dust", "peppermint": "Peppermint", "petroleum_jelly": "Petroleum Jelly", "pickled_slugs": "Pickled Slugs", "plangentine": "Plangentine", "plantain": "Plantain", "poison_ivy": "Poison Ivy", "polypody": "Polypody", "pomegranate_juice": "Pomegranate Juice", "pond_slime": "Pond Slime", "poppy_head": "Poppy Head", "porcupine_quill": "Porcupine Quill", "powder_of_vipers-flesh": "Powder Of Vipers-flesh", "pritchers_porritch": "Pritchers Porritch", "ptolemy": "Ptolemy", "puffer-fish": "Puffer-fish", "puffer-fish_eyes": "Puffer-fish Eyes", "puffskein_hair": "Puffskein Hair", "pungous_onion": "Pungous Onion", "pus": "Pus", "rat_spleen": "Rat Spleen", "rat_tail": "Rat Tail", "reem_blood": "Reem Blood", "rose": "Rose", "rose_oil": "Rose Oil", "rose_petals": "Rose Petals", "rose_thorn": "Rose Thorn", "rotten_egg": "Rotten Egg", "rue": "Rue", "runespoor_egg": "Runespoor Egg", "russians_dragon_nails": "Russians Dragon Nails", "sage": "Sage", "sal_ammoniac": "Sal Ammoniac", "salamander_blood": "Salamander Blood", "salpeter": "Salpeter", "salt": "Salt", "salt_water": "Salt Water", "saltpetre": "Saltpetre", "sardine": "Sardine", "scale_of_dragon": "Scale Of Dragon", "scarab_beetle": "Scarab Beetle", "scurvy_grass": "Scurvy Grass", "shrake_spine": "Shrake Spine", "shrivelfig": "Shrivelfig", "silver": "Silver", "silverweed": "Silverweed", "sloth_brain": "Sloth Brain", "snake_fang": "Snake Fang", "snake_fang_crushed": "Snake Fang Crushed", "snake_fang_powdered": "Snake Fang Powdered", "snakeweed": "Snakeweed", "sneezewort": "Sneezewort", "sopophorous_bean": "Sopophorous Bean", "sopophorous_plant": "Sopophorous Plant", "spiders": "Spiders", "spirit_of_myrrh": "Spirit Of Myrrh", "spleenwart": "Spleenwart", "squill": "Squill", "squill_bulb": "Squill Bulb", "st_johns-wort": "St Johns-wort", "staghorn": "Staghorn", "standard_ingredient": "Standard Ingredient", "standard_ingredient_crushed": "Standard Ingredient Crushed", "star_grass": "Star Grass", "starthistle": "Starthistle", "streeler_shells": "Streeler Shells", "sulphur_vive": "Sulphur Vive", "syrup_of_arnica": "Syrup Of Arnica", "syrup_of_hellebore": "Syrup Of Hellebore", "tar": "Tar", "thaumatagoria": "Thaumatagoria", "thyme": "Thyme", "tincture_of_demiguise": "Tincture Of Demiguise", "toe_of_frog": "Toe Of Frog", "tongue_of_dog": "Tongue Of Dog", "tooth_of_wolf": "Tooth Of Wolf", "tormentil": "Tormentil", "tubeworm": "Tubeworm", "turtle_shell": "Turtle Shell", "unicorn_blood": "Unicorn Blood", "unicorn_hair": "Unicorn Hair", "unicorn_horn": "Unicorn Horn", "unicorn_horn_crushed": "Unicorn Horn Crushed", "unicorn_horn_powdered": "Unicorn Horn Powdered", "urine": "Urine", "valerian": "Valerian", "valerian_root": "Valerian Root", "venomous_tentacula": "Venomous Tentacula", "venomous_tentacula_leaf": "Venomous Tentacula Leaf", "vervain": "Vervain", "vervain_infusion": "Vervain Infusion", "vinegar": "Vinegar", "wartcap_powder": "Wartcap Powder", "wartizome": "Wartizome", "water": "Water", "white_spirit": "White Spirit", "white_wine": "White Wine", "wiggenbush": "Wiggenbush", "wiggenbush_bark": "Wiggenbush Bark", "wiggentree": "Wiggentree", "wiggentree_bark": "Wiggentree Bark", "witchs_ganglion": "Witchs Ganglion", "witches_mummy": "Witches Mummy", "wolfsbane": "Wolfsbane", "wood_louse": "Wood Louse", "woodlice_extract_63": "Woodlice Extract 63", "wool_of_bat": "Wool Of Bat", "wormwood": "Wormwood", "wormwood_essence": "Wormwood Essence", "increase_heat": "Increase Heat"
+				}
+				for (var i = 0; i < 32; i++) {
+					ingredient = document.getElementById('ingredients' + i).value
+					let index = 0
+					for (const [key, value] of Object.entries(ingredients)) {
+						index++;
+						if (key == ingredient) {
+							index--;
+							if (index == 0 || index == 296) {
+								index = 9999
+							}
+							break;
+						}
+					}
+					arr[i] = index
+				}
+				outputString = "data modify storage hp:potions " + name + " [" + arr + "]\n\n" +
+				"give @s potion{HideFlags:32,display:{Name:'{\"text\":\"" + name + "\"" + color + italic + bold + underlined + strikethrough + obfuscated + "}'},Potion:\"minecraft:empty\",CustomPotionColor:" + getPotionColor(colorIn) + ",CustomModelData:" + custommodeldata + "} 1"
+				return outputString;
 			}
 
 			function generateWand() {
@@ -157,6 +254,7 @@
 				var n = n ? n : "selector"
 				let w = ""
 				let c = ""
+				let ig = ""
 				$("#" + pane).append(
 					"<br><span class='pane'>" + n + " </span>" + 
 					mkShowHide(s + "ItemPane", "ItemPaneSH") + 
@@ -165,104 +263,144 @@
 					"ItemPane' class='itemControl roundedDiv'></div>"
 				);
 				n = n.toLowerCase().replace(/ /g, '')
-				var woods = {
-					"acacia": "Acacia",
-					"alder": "Alder",
-					"apple": "Apple",
-					"ash": "Ash",
-					"aspen": "Aspen",
-					"beech": "Beech",
-					"birch": "Birch",
-					"blackthorn": "Blackthorn",
-					"black_walnut": "Black Walnut",
-					"cedar": "Cedar",
-					"cherry": "Cherry",
-					"chestnut": "Chestnut",
-					"cypress": "Cypress",
-					"dogwood": "Dogwood",
-					"ebony": "Ebony",
-					"elder": "Elder",
-					"elm": "Elm",
-					"english_oak": "English oak",
-					"fir": "Fir",
-					"hawthorn": "Hawthorn",
-					"hazel": "Hazel",
-					"holly": "Holly",
-					"hornbeam": "Hornbeam",
-					"ivy": "Ivy",
-					"larch": "Larch",
-					"laurel": "Laurel",
-					"mahogany": "Mahogany",
-					"maple": "Maple",
-					"pear": "Pear",
-					"pine": "Pine",
-					"poplar": "Poplar",
-					"prickly_ash": "Prickly ash",
-					"red_oak": "Red oak",
-					"redwood": "Redwood",
-					"reed": "Reed",
-					"rosewood": "Rosewood",
-					"rowan": "Rowan",
-					"silver_lime": "Silver lime",
-					"spruce": "Spruce",
-					"sugar_maple": "Sugar Maple",
-					"swamp_mayhaw": "Swamp mayhaw",
-					"sycamore": "Sycamore",
-					"tamarack": "Tamarack",
-					"vine": "Vine",
-					"walnut": "Walnut",
-					"willow": "Willow",
-					"yew": "Yew",
-					"custom": "Custom"
+				switch(n) {
+					case "wanditem":
+						var woods = {
+							"acacia": "Acacia",
+							"alder": "Alder",
+							"apple": "Apple",
+							"ash": "Ash",
+							"aspen": "Aspen",
+							"beech": "Beech",
+							"birch": "Birch",
+							"blackthorn": "Blackthorn",
+							"black_walnut": "Black Walnut",
+							"cedar": "Cedar",
+							"cherry": "Cherry",
+							"chestnut": "Chestnut",
+							"cypress": "Cypress",
+							"dogwood": "Dogwood",
+							"ebony": "Ebony",
+							"elder": "Elder",
+							"elm": "Elm",
+							"english_oak": "English oak",
+							"fir": "Fir",
+							"hawthorn": "Hawthorn",
+							"hazel": "Hazel",
+							"holly": "Holly",
+							"hornbeam": "Hornbeam",
+							"ivy": "Ivy",
+							"larch": "Larch",
+							"laurel": "Laurel",
+							"mahogany": "Mahogany",
+							"maple": "Maple",
+							"pear": "Pear",
+							"pine": "Pine",
+							"poplar": "Poplar",
+							"prickly_ash": "Prickly ash",
+							"red_oak": "Red oak",
+							"redwood": "Redwood",
+							"reed": "Reed",
+							"rosewood": "Rosewood",
+							"rowan": "Rowan",
+							"silver_lime": "Silver lime",
+							"spruce": "Spruce",
+							"sugar_maple": "Sugar Maple",
+							"swamp_mayhaw": "Swamp mayhaw",
+							"sycamore": "Sycamore",
+							"tamarack": "Tamarack",
+							"vine": "Vine",
+							"walnut": "Walnut",
+							"willow": "Willow",
+							"yew": "Yew",
+							"custom": "Custom"
+						}
+						for (const [key, value] of Object.entries(woods)) {
+							w += "<option value='" + key + "'>" + value + "</option>"
+						}
+						var cores = {
+							"african_mermaid_hair": "African mermaid hair",
+							"basilisk_horn": "Basilisk horn",
+							"bone": "Bone",
+							"curupira_hair": "Curupira hair",
+							"dittany": "Dittany",
+							"dragon_heartstring": "Dragon heartstring",
+							"horned_serpent_horn": "Horned Serpent horn",
+							"jackalope_antler": "Jackalope antler",
+							"kelpie_hair": "Kelpie hair",
+							"koralle": "Koralle",
+							"phoenix_feather": "Phoenix feather",
+							"rougarou_hair": "Rougarou hair",
+							"shell": "Shell",
+							"snallygaster_heartstring": "Snallygaster heartstring",
+							"supreme_cores": "Supreme Cores",
+							"thestral_tail_hair": "Thestral tail hair",
+							"thunderbird_tail_feather": "Thunderbird tail feather",
+							"troll_whisker": "Troll whisker",
+							"twin_wand_cores": "Twin Wand Cores",
+							"unicorn_hair": "Unicorn hair",
+							"veela_hair": "Veela hair",
+							"wampus_cat_hair": "Wampus cat hair",
+							"white_river_monster_spine": "White River Monster spine",
+							"custom": "Custom"
+						}
+						for (const [key, value] of Object.entries(cores)) {
+							c += "<option value='" + key + "'>" + value + "</option>"
+						}
+						$("#ItemPane").append("<br><span>Name </span><input type='text' value='Wand' id='name' ></br>")
+						$("#ItemPane").append("<br><span><table class='aTable' style='display:inline;position:relative;left:80px'><tbody><tr><td></td><td width='40' align='left'>Unset</td><td width='40' align='left'>True</td><td width='40' align='left'>False</td></tr><tr><td align='right'>Bold</td><td><input type='radio' id='GiveItem0ItemNameboldunset' name='GiveItem0ItemNamebold' value='unset' class='tellrawUpdate' title='unset' checked></td><td><input type='radio' id='GiveItem0ItemNameboldtrue' name='GiveItem0ItemNamebold' value='true' class='tellrawUpdate' title='true'></td><td><input type='radio' id='GiveItem0ItemNameboldfalse' name='GiveItem0ItemNamebold' value='false' class='tellrawUpdate' title='false'></td></tr><tr><td align='right'>Italic</td><td><input type='radio' id='GiveItem0ItemNameitalicunset' name='GiveItem0ItemNameitalic' value='unset' class='tellrawUpdate' title='unset' checked></td><td><input type='radio' id='GiveItem0ItemNameitalictrue' name='GiveItem0ItemNameitalic' value='true' class='tellrawUpdate' title='true'></td><td><input type='radio' id='GiveItem0ItemNameitalicfalse' name='GiveItem0ItemNameitalic' value='false' class='tellrawUpdate' title='false'></td></tr><tr><td align='right'>Underlined</td><td><input type='radio' id='GiveItem0ItemNameunderlinedunset' name='GiveItem0ItemNameunderlined' value='unset' class='tellrawUpdate' title='unset' checked></td><td><input type='radio' id='GiveItem0ItemNameunderlinedtrue' name='GiveItem0ItemNameunderlined' value='true' class='tellrawUpdate' title='true'></td><td><input type='radio' id='GiveItem0ItemNameunderlinedfalse' name='GiveItem0ItemNameunderlined' value='false' class='tellrawUpdate' title='false'></td></tr><tr><td align='right'>Strikethrough</td><td><input type='radio' id='GiveItem0ItemNamestrikethroughunset' name='GiveItem0ItemNamestrikethrough' value='unset' class='tellrawUpdate' title='unset' checked></td><td><input type='radio' id='GiveItem0ItemNamestrikethroughtrue' name='GiveItem0ItemNamestrikethrough' value='true' class='tellrawUpdate' title='true'></td><td><input type='radio' id='GiveItem0ItemNamestrikethroughfalse' name='GiveItem0ItemNamestrikethrough' value='false' class='tellrawUpdate' title='false'></td></tr><tr><td align='right'>Obfuscated</td><td><input type='radio' id='GiveItem0ItemNameobfuscatedunset' name='GiveItem0ItemNameobfuscated' value='unset' class='tellrawUpdate' title='unset' checked></td><td><input type='radio' id='GiveItem0ItemNameobfuscatedtrue' name='GiveItem0ItemNameobfuscated' value='true' class='tellrawUpdate' title='true'></td><td><input type='radio' id='GiveItem0ItemNameobfuscatedfalse' name='GiveItem0ItemNameobfuscated' value='false' class='tellrawUpdate' title='false'></td></tr></tbody></table></span></br>")
+						$("#ItemPane").append("<br><span>Color </span><span><select id='GiveItem0ItemNamecolor' class='jsonHexColorUpdate' onchange='validateColor()'><option value='unset'>unset</option><option value='Hex Code'>Hex Code</option><option value='reset'>reset</option><option value='white'>white</option><option value='black'>black</option><option value='dark_blue'>dark_blue</option><option value='dark_green'>dark_green</option><option value='dark_aqua'>dark_aqua</option><option value='dark_red'>dark_red</option><option value='dark_purple'>dark_purple</option><option value='gold'>gold</option><option value='gray'>gray</option><option value='dark_gray'>dark_gray</option><option value='blue'>blue</option><option value='green'>green</option><option value='aqua'>aqua</option><option value='red'>red</option><option value='light_purple'>light_purple</option><option value='yellow'>yellow</option></select><input type='color' id='html5colorpicker' value='#ff0000' style='width:85%;display:none;'></span></br>")
+						$("#ItemPane").append("<br><span>Wood </span><input type='text' value='" + Object.keys(woods)[0] + "' id='" + "woods" + "_txt'>")
+						$("#ItemPane").append("<select id='" + "woods" + "' onchange='updateText(" + "woods" + ", " + JSON.stringify(woods) + ")'>" + w + "</select></br>")
+						$("#ItemPane").append("<br><span>Core </span><input type='text' value='" + Object.keys(cores)[0] + "' id='" + "cores" + "_txt'>")
+						$("#ItemPane").append("<select id='" + "cores" + "' onchange='updateText(" + "cores" + ", " + JSON.stringify(cores) + ")'>" + c + "</select></br>")
+						break;
+
+
+					case "potionitem":
+
+						var ingredients = {
+							"none": "None", "abraxan_hair": "Abraxan Hair", "aconite": "Aconite", "acromantula_venom": "Acromantula Venom", "adders_fork": "Adders Fork", "african_red_pepper": "African Red Pepper", "african_sea_salt": "African Sea Salt", "agrippa": "Agrippa", "alcohol": "Alcohol", "alihotsy": "Alihotsy", "angels_trumpet": "Angels Trumpet", "anjelica": "Anjelica", "antimony": "Antimony", "armadillo_bile": "Armadillo Bile", "armotentia": "Armotentia", "arnica": "Arnica", "ashwinder_egg": "Ashwinder Egg", "asian_dragon_hair": "Asian Dragon Hair", "asphodel": "Asphodel", "avocado": "Avocado", "balm": "Balm", "banana": "Banana", "baneberry": "Baneberry", "bat_spleen": "Bat Spleen", "bat_wing": "Bat Wing", "beetle_eye": "Beetle Eye", "belladonna": "Belladonna", "betony": "Betony", "bezoar": "Bezoar", "bezoar_crushed": "Bezoar Crushed", "bezoar_powdered": "Bezoar Powdered", "bicorn_horn": "Bicorn Horn", "billywig_sting": "Billywig Sting", "billywig_sting_slime": "Billywig Sting Slime", "billywig_wings": "Billywig Wings", "bitter_root": "Bitter Root", "blatta_pulvereus": "Blatta Pulvereus", "blind-worms_sting": "Blind-worms Sting", "blood": "Blood", "bloodroot": "Bloodroot", "blowfly": "Blowfly", "bone": "Bone", "boom_berry": "Boom Berry", "boomslang": "Boomslang", "boomslang_skin": "Boomslang Skin", "borage": "Borage", "bouncing_bulb": "Bouncing Bulb", "bouncing_spider_juice": "Bouncing Spider Juice", "bubotuber_pus": "Bubotuber Pus", "bulbadox_juice": "Bulbadox Juice", "bundimun_secretion": "Bundimun Secretion", "bursting_mushroom": "Bursting Mushroom", "butterscotch": "Butterscotch", "camphirated_spirit": "Camphirated Spirit", "castor_oil": "Castor Oil", "cat_hair": "Cat Hair", "caterpillar": "Caterpillar", "centaury": "Centaury", "cheese": "Cheese", "chicken_lips": "Chicken Lips", "chinese_chomping_cabbage": "Chinese Chomping Cabbage", "chizpurfle_carapace": "Chizpurfle Carapace", "chizpurfle_fang": "Chizpurfle Fang", "cinnamon": "Cinnamon", "cockroach": "Cockroach", "corn_starch": "Corn Starch", "cowbane": "Cowbane", "crocodile_heart": "Crocodile Heart", "daisy": "Daisy", "dandelion_root": "Dandelion Root", "dandruff": "Dandruff", "deadlyius": "Deadlyius", "death-cap": "Death-cap", "dittany": "Dittany", "doxy_egg": "Doxy Egg", "dragon_blood": "Dragon Blood", "dragon_claw": "Dragon Claw", "dragon_claw_ooze": "Dragon Claw Ooze", "dragon_dung": "Dragon Dung", "dragon_horn": "Dragon Horn", "dragon_liver": "Dragon Liver", "dragonfly_thorax": "Dragonfly Thorax", "eagle_owl_feather": "Eagle Owl Feather", "eel_eye": "Eel Eye", "erumpent_horn": "Erumpent Horn", "erumpent_tail": "Erumpent Tail", "essence_of_comfrey": "Essence Of Comfrey", "essence_of_daisyroot": "Essence Of Daisyroot", "exploding_fluid": "Exploding Fluid", "exploding_ginger_eyelash": "Exploding Ginger Eyelash", "eye_of_newt": "Eye Of Newt", "eyeball": "Eyeball", "fairy_wing": "Fairy Wing", "fanged_geranium": "Fanged Geranium", "fillet_of_a_fenny_snake": "Fillet Of A Fenny Snake", "fire": "Fire", "fire_seed": "Fire Seed", "firefly": "Firefly", "flabberghasted_leech": "Flabberghasted Leech", "flesh": "Flesh", "flitterby": "Flitterby", "flobberworm_mucus": "Flobberworm Mucus", "flower_head": "Flower Head", "fluxweed": "Fluxweed", "flying_seahorses": "Flying Seahorses", "foxglove": "Foxglove", "frog": "Frog", "frog_brain": "Frog Brain", "galanthus_nivalis": "Galanthus Nivalis", "giant_purple_toad_wart": "Giant Purple Toad Wart", "gillyweed": "Gillyweed", "ginger_root": "Ginger Root", "gnat_heads": "Gnat Heads", "gomas_barbadensis": "Gomas Barbadensis", "goosegrass": "Goosegrass", "granian_hair": "Granian Hair", "graphorn_horn": "Graphorn Horn", "gravy": "Gravy", "griffin_claw": "Griffin Claw", "gulf": "Gulf", "gurdyroot": "Gurdyroot", "haliwinkles": "Haliwinkles", "hellebore": "Hellebore", "hemlock": "Hemlock", "herbaria": "Herbaria", "hermit_crab_shell": "Hermit Crab Shell", "honey": "Honey", "honeywater": "Honeywater", "horklump_juice": "Horklump Juice", "horned_slug": "Horned Slug", "horned_toad": "Horned Toad", "horse_hair": "Horse Hair", "horseradish": "Horseradish", "howlets_wing": "Howlets Wing", "iguana_blood": "Iguana Blood", "infusion_of_wormwood": "Infusion Of Wormwood", "jewelweed": "Jewelweed", "jobberknoll_feather": "Jobberknoll Feather", "kelp": "Kelp", "knarl_quills": "Knarl Quills", "kneazle_hair": "Kneazle Hair", "knotgrass": "Knotgrass", "lacewing_fly": "Lacewing Fly", "ladys_mantle": "Ladys Mantle", "lard": "Lard", "lavender": "Lavender", "leech": "Leech", "leech_juice": "Leech Juice", "left_handed_nazle_powder": "Left Handed Nazle Powder", "lethe_river_water": "Lethe River Water", "lionfish": "Lionfish", "lionfish_spine": "Lionfish Spine", "liver": "Liver", "lizards_leg": "Lizards Leg", "lobalug_venom": "Lobalug Venom", "lovage": "Lovage", "mackled_malaclaw_tail": "Mackled Malaclaw Tail", "mallowsweet": "Mallowsweet", "mandrake": "Mandrake", "mandrake_root": "Mandrake Root", "mandrake,_stewed": "Mandrake, Stewed", "maw": "Maw", "mercury_and_mars": "Mercury And Mars", "mint": "Mint", "mistletoe_berry": "Mistletoe Berry", "mistletoe_berry_crushed": "Mistletoe Berry Crushed", "moly": "Moly", "monkshhod": "Monkshhod", "moondew": "Moondew", "moonseed": "Moonseed", "moonstone": "Moonstone", "morning_dew": "Morning Dew", "motherwort": "Motherwort", "murtlap_tentacle": "Murtlap Tentacle", "mushroom": "Mushroom", "naginis_venom": "Naginis Venom", "neem_oil": "Neem Oil", "nettle": "Nettle", "newt": "Newt", "newt_spleen": "Newt Spleen", "nifflers_fancy": "Nifflers Fancy", "nightshade": "Nightshade", "nux_myristica": "Nux Myristica", "occamy_egg": "Occamy Egg", "octopus_powder": "Octopus Powder", "onion_juice": "Onion Juice", "peacock_feather": "Peacock Feather", "pearl_dust": "Pearl Dust", "peppermint": "Peppermint", "petroleum_jelly": "Petroleum Jelly", "pickled_slugs": "Pickled Slugs", "plangentine": "Plangentine", "plantain": "Plantain", "poison_ivy": "Poison Ivy", "polypody": "Polypody", "pomegranate_juice": "Pomegranate Juice", "pond_slime": "Pond Slime", "poppy_head": "Poppy Head", "porcupine_quill": "Porcupine Quill", "powder_of_vipers-flesh": "Powder Of Vipers-flesh", "pritchers_porritch": "Pritchers Porritch", "ptolemy": "Ptolemy", "puffer-fish": "Puffer-fish", "puffer-fish_eyes": "Puffer-fish Eyes", "puffskein_hair": "Puffskein Hair", "pungous_onion": "Pungous Onion", "pus": "Pus", "rat_spleen": "Rat Spleen", "rat_tail": "Rat Tail", "reem_blood": "Reem Blood", "rose": "Rose", "rose_oil": "Rose Oil", "rose_petals": "Rose Petals", "rose_thorn": "Rose Thorn", "rotten_egg": "Rotten Egg", "rue": "Rue", "runespoor_egg": "Runespoor Egg", "russians_dragon_nails": "Russians Dragon Nails", "sage": "Sage", "sal_ammoniac": "Sal Ammoniac", "salamander_blood": "Salamander Blood", "salpeter": "Salpeter", "salt": "Salt", "salt_water": "Salt Water", "saltpetre": "Saltpetre", "sardine": "Sardine", "scale_of_dragon": "Scale Of Dragon", "scarab_beetle": "Scarab Beetle", "scurvy_grass": "Scurvy Grass", "shrake_spine": "Shrake Spine", "shrivelfig": "Shrivelfig", "silver": "Silver", "silverweed": "Silverweed", "sloth_brain": "Sloth Brain", "snake_fang": "Snake Fang", "snake_fang_crushed": "Snake Fang Crushed", "snake_fang_powdered": "Snake Fang Powdered", "snakeweed": "Snakeweed", "sneezewort": "Sneezewort", "sopophorous_bean": "Sopophorous Bean", "sopophorous_plant": "Sopophorous Plant", "spiders": "Spiders", "spirit_of_myrrh": "Spirit Of Myrrh", "spleenwart": "Spleenwart", "squill": "Squill", "squill_bulb": "Squill Bulb", "st_johns-wort": "St Johns-wort", "staghorn": "Staghorn", "standard_ingredient": "Standard Ingredient", "standard_ingredient_crushed": "Standard Ingredient Crushed", "star_grass": "Star Grass", "starthistle": "Starthistle", "streeler_shells": "Streeler Shells", "sulphur_vive": "Sulphur Vive", "syrup_of_arnica": "Syrup Of Arnica", "syrup_of_hellebore": "Syrup Of Hellebore", "tar": "Tar", "thaumatagoria": "Thaumatagoria", "thyme": "Thyme", "tincture_of_demiguise": "Tincture Of Demiguise", "toe_of_frog": "Toe Of Frog", "tongue_of_dog": "Tongue Of Dog", "tooth_of_wolf": "Tooth Of Wolf", "tormentil": "Tormentil", "tubeworm": "Tubeworm", "turtle_shell": "Turtle Shell", "unicorn_blood": "Unicorn Blood", "unicorn_hair": "Unicorn Hair", "unicorn_horn": "Unicorn Horn", "unicorn_horn_crushed": "Unicorn Horn Crushed", "unicorn_horn_powdered": "Unicorn Horn Powdered", "urine": "Urine", "valerian": "Valerian", "valerian_root": "Valerian Root", "venomous_tentacula": "Venomous Tentacula", "venomous_tentacula_leaf": "Venomous Tentacula Leaf", "vervain": "Vervain", "vervain_infusion": "Vervain Infusion", "vinegar": "Vinegar", "wartcap_powder": "Wartcap Powder", "wartizome": "Wartizome", "water": "Water", "white_spirit": "White Spirit", "white_wine": "White Wine", "wiggenbush": "Wiggenbush", "wiggenbush_bark": "Wiggenbush Bark", "wiggentree": "Wiggentree", "wiggentree_bark": "Wiggentree Bark", "witchs_ganglion": "Witchs Ganglion", "witches_mummy": "Witches Mummy", "wolfsbane": "Wolfsbane", "wood_louse": "Wood Louse", "woodlice_extract_63": "Woodlice Extract 63", "wool_of_bat": "Wool Of Bat", "wormwood": "Wormwood", "wormwood_essence": "Wormwood Essence", "increase_heat": "Increase Heat"
+						}
+						for (const [key, value] of Object.entries(ingredients)) {
+							ig += "<option value='" + key + "'>" + value + "</option>"
+						}
+
+						$("#ItemPane").append("<br><span>Name </span><input type='text' value='Potion' id='name' ></br>")
+						$("#ItemPane").append("<br><span>Custom Model Data </span><input type='text' value='' id='custommodeldata' onchange='validateInt(custommodeldata)'></br>")
+						$("#ItemPane").append("<br><span><table class='aTable' style='display:inline;position:relative;left:80px'><tbody><tr><td></td><td width='40' align='left'>Unset</td><td width='40' align='left'>True</td><td width='40' align='left'>False</td></tr><tr><td align='right'>Bold</td><td><input type='radio' id='GiveItem0ItemNameboldunset' name='GiveItem0ItemNamebold' value='unset' class='tellrawUpdate' title='unset' checked></td><td><input type='radio' id='GiveItem0ItemNameboldtrue' name='GiveItem0ItemNamebold' value='true' class='tellrawUpdate' title='true'></td><td><input type='radio' id='GiveItem0ItemNameboldfalse' name='GiveItem0ItemNamebold' value='false' class='tellrawUpdate' title='false'></td></tr><tr><td align='right'>Italic</td><td><input type='radio' id='GiveItem0ItemNameitalicunset' name='GiveItem0ItemNameitalic' value='unset' class='tellrawUpdate' title='unset' checked></td><td><input type='radio' id='GiveItem0ItemNameitalictrue' name='GiveItem0ItemNameitalic' value='true' class='tellrawUpdate' title='true'></td><td><input type='radio' id='GiveItem0ItemNameitalicfalse' name='GiveItem0ItemNameitalic' value='false' class='tellrawUpdate' title='false'></td></tr><tr><td align='right'>Underlined</td><td><input type='radio' id='GiveItem0ItemNameunderlinedunset' name='GiveItem0ItemNameunderlined' value='unset' class='tellrawUpdate' title='unset' checked></td><td><input type='radio' id='GiveItem0ItemNameunderlinedtrue' name='GiveItem0ItemNameunderlined' value='true' class='tellrawUpdate' title='true'></td><td><input type='radio' id='GiveItem0ItemNameunderlinedfalse' name='GiveItem0ItemNameunderlined' value='false' class='tellrawUpdate' title='false'></td></tr><tr><td align='right'>Strikethrough</td><td><input type='radio' id='GiveItem0ItemNamestrikethroughunset' name='GiveItem0ItemNamestrikethrough' value='unset' class='tellrawUpdate' title='unset' checked></td><td><input type='radio' id='GiveItem0ItemNamestrikethroughtrue' name='GiveItem0ItemNamestrikethrough' value='true' class='tellrawUpdate' title='true'></td><td><input type='radio' id='GiveItem0ItemNamestrikethroughfalse' name='GiveItem0ItemNamestrikethrough' value='false' class='tellrawUpdate' title='false'></td></tr><tr><td align='right'>Obfuscated</td><td><input type='radio' id='GiveItem0ItemNameobfuscatedunset' name='GiveItem0ItemNameobfuscated' value='unset' class='tellrawUpdate' title='unset' checked></td><td><input type='radio' id='GiveItem0ItemNameobfuscatedtrue' name='GiveItem0ItemNameobfuscated' value='true' class='tellrawUpdate' title='true'></td><td><input type='radio' id='GiveItem0ItemNameobfuscatedfalse' name='GiveItem0ItemNameobfuscated' value='false' class='tellrawUpdate' title='false'></td></tr></tbody></table></span></br>")
+						$("#ItemPane").append("<br><span>Color </span><span><select id='GiveItem0ItemNamecolor' class='jsonHexColorUpdate' onchange='validateColor()'><option value='unset'>unset</option><option value='Hex Code'>Hex Code</option><option value='reset'>reset</option><option value='white'>white</option><option value='black'>black</option><option value='dark_blue'>dark_blue</option><option value='dark_green'>dark_green</option><option value='dark_aqua'>dark_aqua</option><option value='dark_red'>dark_red</option><option value='dark_purple'>dark_purple</option><option value='gold'>gold</option><option value='gray'>gray</option><option value='dark_gray'>dark_gray</option><option value='blue'>blue</option><option value='green'>green</option><option value='aqua'>aqua</option><option value='red'>red</option><option value='light_purple'>light_purple</option><option value='yellow'>yellow</option></select><input type='color' id='html5colorpicker' value='#ff0000' style='width:85%;display:none;'></span></br>")
+						for (i = 0; i < 32; i++) {
+							$("#ItemPane").append(
+								"<section id='ingredient" + i + "'>" + 
+									"<span>Ingredient " + (i + 1) + " </span>" + 
+									"<input type='text' value='" + Object.keys(ingredients)[0] + "' id='" + "ingredients" + "_txt'>" + 
+									"<select id='" + "ingredients" + i + "' onchange='potionChange(" + "ingredients" + i + ", " + JSON.stringify(ingredients) + ", " + i + ")'>" + ig + "</select>" + 
+									"" + 
+								"<br></section>"
+							)
+						}
+						break;
 				}
-				for (const [key, value] of Object.entries(woods)) {
-					w += "<option value='" + key + "'>" + value + "</option>"
-				}
-				var cores = {
-					"african_mermaid_hair": "African mermaid hair",
-					"basilisk_horn": "Basilisk horn",
-					"bone": "Bone",
-					"curupira_hair": "Curupira hair",
-					"dittany": "Dittany",
-					"dragon_heartstring": "Dragon heartstring",
-					"horned_serpent_horn": "Horned Serpent horn",
-					"jackalope_antler": "Jackalope antler",
-					"kelpie_hair": "Kelpie hair",
-					"koralle": "Koralle",
-					"phoenix_feather": "Phoenix feather",
-					"rougarou_hair": "Rougarou hair",
-					"shell": "Shell",
-					"snallygaster_heartstring": "Snallygaster heartstring",
-					"supreme_cores": "Supreme Cores",
-					"thestral_tail_hair": "Thestral tail hair",
-					"thunderbird_tail_feather": "Thunderbird tail feather",
-					"troll_whisker": "Troll whisker",
-					"twin_wand_cores": "Twin Wand Cores",
-					"unicorn_hair": "Unicorn hair",
-					"veela_hair": "Veela hair",
-					"wampus_cat_hair": "Wampus cat hair",
-					"white_river_monster_spine": "White River Monster spine",
-					"custom": "Custom"
-				}
-				for (const [key, value] of Object.entries(cores)) {
-					c += "<option value='" + key + "'>" + value + "</option>"
-				}
-				$("#ItemPane").append("<br><span>Name </span><input type='text' value='Wand' id='name' ></br>")
-				$("#ItemPane").append("<br><span><table class='aTable' style='display:inline;position:relative;left:80px'><tbody><tr><td></td><td width='40' align='left'>Unset</td><td width='40' align='left'>True</td><td width='40' align='left'>False</td></tr><tr><td align='right'>Bold</td><td><input type='radio' id='GiveItem0ItemNameboldunset' name='GiveItem0ItemNamebold' value='unset' class='tellrawUpdate' title='unset' checked></td><td><input type='radio' id='GiveItem0ItemNameboldtrue' name='GiveItem0ItemNamebold' value='true' class='tellrawUpdate' title='true'></td><td><input type='radio' id='GiveItem0ItemNameboldfalse' name='GiveItem0ItemNamebold' value='false' class='tellrawUpdate' title='false'></td></tr><tr><td align='right'>Italic</td><td><input type='radio' id='GiveItem0ItemNameitalicunset' name='GiveItem0ItemNameitalic' value='unset' class='tellrawUpdate' title='unset' checked></td><td><input type='radio' id='GiveItem0ItemNameitalictrue' name='GiveItem0ItemNameitalic' value='true' class='tellrawUpdate' title='true'></td><td><input type='radio' id='GiveItem0ItemNameitalicfalse' name='GiveItem0ItemNameitalic' value='false' class='tellrawUpdate' title='false'></td></tr><tr><td align='right'>Underlined</td><td><input type='radio' id='GiveItem0ItemNameunderlinedunset' name='GiveItem0ItemNameunderlined' value='unset' class='tellrawUpdate' title='unset' checked></td><td><input type='radio' id='GiveItem0ItemNameunderlinedtrue' name='GiveItem0ItemNameunderlined' value='true' class='tellrawUpdate' title='true'></td><td><input type='radio' id='GiveItem0ItemNameunderlinedfalse' name='GiveItem0ItemNameunderlined' value='false' class='tellrawUpdate' title='false'></td></tr><tr><td align='right'>Strikethrough</td><td><input type='radio' id='GiveItem0ItemNamestrikethroughunset' name='GiveItem0ItemNamestrikethrough' value='unset' class='tellrawUpdate' title='unset' checked></td><td><input type='radio' id='GiveItem0ItemNamestrikethroughtrue' name='GiveItem0ItemNamestrikethrough' value='true' class='tellrawUpdate' title='true'></td><td><input type='radio' id='GiveItem0ItemNamestrikethroughfalse' name='GiveItem0ItemNamestrikethrough' value='false' class='tellrawUpdate' title='false'></td></tr><tr><td align='right'>Obfuscated</td><td><input type='radio' id='GiveItem0ItemNameobfuscatedunset' name='GiveItem0ItemNameobfuscated' value='unset' class='tellrawUpdate' title='unset' checked></td><td><input type='radio' id='GiveItem0ItemNameobfuscatedtrue' name='GiveItem0ItemNameobfuscated' value='true' class='tellrawUpdate' title='true'></td><td><input type='radio' id='GiveItem0ItemNameobfuscatedfalse' name='GiveItem0ItemNameobfuscated' value='false' class='tellrawUpdate' title='false'></td></tr></tbody></table></span></br>")
-				$("#ItemPane").append("<br><span>Color </span><span><select id='GiveItem0ItemNamecolor' class='jsonHexColorUpdate' onchange='validateColor()'><option value='unset'>unset</option><option value='Hex Code'>Hex Code</option><option value='reset'>reset</option><option value='white'>white</option><option value='black'>black</option><option value='dark_blue'>dark_blue</option><option value='dark_green'>dark_green</option><option value='dark_aqua'>dark_aqua</option><option value='dark_red'>dark_red</option><option value='dark_purple'>dark_purple</option><option value='gold'>gold</option><option value='gray'>gray</option><option value='dark_gray'>dark_gray</option><option value='blue'>blue</option><option value='green'>green</option><option value='aqua'>aqua</option><option value='red'>red</option><option value='light_purple'>light_purple</option><option value='yellow'>yellow</option></select><input type='color' id='html5colorpicker' value='#ff0000' style='width:85%;display:none;'></span></br>")
-				$("#ItemPane").append("<br><span>Wood </span><input type='text' value='" + Object.keys(woods)[0] + "' id='" + "woods" + "_txt'>")
-				$("#ItemPane").append("<select id='" + "woods" + "' onchange='updateText(" + "woods" + ", " + JSON.stringify(woods) + ")'>" + w + "</select></br>")
-				$("#ItemPane").append("<br><span>Core </span><input type='text' value='" + Object.keys(cores)[0] + "' id='" + "cores" + "_txt'>")
-				$("#ItemPane").append("<select id='" + "cores" + "' onchange='updateText(" + "cores" + ", " + JSON.stringify(cores) + ")'>" + c + "</select></br>")
 			}
 
-			/*function createComponent(e, n) {
-				$("#" + e).append(mkShowHide(n + "Pane", n + "SH") + "<div id='" + n + "Pane' class='itemSelectControl roundedDiv'></div>")
-			}*/
+			function potionChange(update, values, index){
+				updateText(update, values)
+				hidePotionIng(index)
+			}
+			function hidePotionIng(index) {
+				for (i = 0; i < index+2; i++) {
+					document.getElementById("ingredient" + i).style.display = "block"
+				}
+				if (document.getElementById("ingredients" + index).selectedIndex == 0) {
+					for (i = index+1; i < 32; i++) {
+						document.getElementById("ingredient" + i).style.display = "none"
+					}
+				}
+			}
 
 			function updateText(elem, values) {
 				let preElem = elem.previousSibling;
-				//console.log(elem.value)
 				preElem.value = elem.value;
 			}
 
@@ -292,6 +430,12 @@
 				$("#" + e).append("<br><div id='" + t + "' class='roundedDiv'></div>")
 				getSelectors(t)
 				createItemComponent(t, "Wand Item")
+			}
+
+			function makePotionPane(e, t) {
+				$("#" + e).append("<br><div id='" + t + "' class='roundedDiv'></div>")
+				createItemComponent(t, "Potion Item")
+				hidePotionIng(0)
 			}
 
 		</script>
@@ -367,6 +511,7 @@
 		}
 		.selectorControl, .itemControl{
 			background-color:var(--main-color-d);
+			height: fit-content;
 		}
 		.showHide{
 			color:var(--blue-text); 
