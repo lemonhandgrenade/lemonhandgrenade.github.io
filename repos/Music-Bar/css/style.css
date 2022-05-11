@@ -1,0 +1,241 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap')
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	color: white;
+	height: 100vh;
+	margin: 0;
+	font-family: 'Lato', Arial, sans-serif;
+	background-color: #312137;
+	background-image: linear-gradient(0deg, #312137 23.8%, #1a2129 92%);
+	background-repeat: repeat-x, repeat-y, repeat-x, repeat-y;
+	background-position: top center, center right, bottom center, center left;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.music-wrapper {
+	background-color: #713141;
+	border-radius: 15px;
+	box-shadow: 20px 20px 20px 0 rgba(81, 40, 57, 0.6), -20px -20px 20px 0 rgba(81, 40, 57, 0.6);
+	display: flex;
+	padding: 20px 30px;
+	position: relative;
+	margin: 100px 0;
+	/* width: 13.5%; */
+	z-index: 10;
+}
+
+.img-wrapper {
+	position: relative;
+	width: 110px;
+}
+
+.img-wrapper img {
+	width: inherit;
+	height: 110px;
+	border-radius: 50%;
+	-o-object-fit: cover;
+	object-fit: cover;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+
+.navigation {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1;
+}
+
+.action-btn {
+	background-color: #713141;
+	border: 0;
+	color: #512839;
+	font-size: 20px;
+	cursor: pointer;
+	padding: 10px;
+	margin: 0 20px;
+}
+
+.action-btn-big {
+	color: #312137;
+	font-size: 30px;
+}
+
+.action-btn:focus {
+	outline: 0;
+}
+
+.music-info {
+	background-color: rgba(113, 49, 65, 0.5);
+	border-radius: 15px 15px 0 0;
+	position: absolute;
+	top: 0;
+	left: 20px;
+	height: 75%;
+	width: calc(51%);
+	opacity: 0;
+	transform: translateY(0%);
+	padding: 10px 10px 10px 150px;
+	z-index: -1;
+	transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.music-info h4 {
+	margin: 0;
+}
+
+.music-wrapper.play .music-info {
+	opacity: 1;
+	transform: translateY(-100%);
+}
+
+.progress-wrapper {
+	background: white;
+	border-radius: 5px;
+	cursor: pointer;
+	margin: 10px 0;
+	height: 4px;
+	width: 100%;
+}
+
+.progress {
+	background-color: #713141;
+	border-radius: 5px;
+	height: 4.25px;
+	top: 10px;
+	width: 0;
+	transition: width 0.1s linear;
+}
+
+#audio_visual {
+	transform: scaleY(-1);
+	width: 140%;
+	height: 80px;
+	padding-left: 2px;
+}
+
+svg {
+	width: 16px;
+	display: block;
+	margin: 10px auto;
+	position: absolute;
+	top: 95%;
+}
+.arrow {
+	-webkit-animation: scroll .35s ease-in alternate infinite;
+	        animation: scroll .35s ease-in alternate infinite;
+}
+@-webkit-keyframes scroll {
+	from {
+		transform: translateY(0);
+	}
+	to {
+		transform: translateY(10px);
+	}
+}
+@keyframes scroll {
+	from {
+		transform: translateY(0);
+	}
+	to {
+		transform: translateY(10px);
+	}
+}
+
+.language-html, .language-js {
+	color: #808080
+}
+
+pre {
+	border: 2px #8d8d8d;
+	border-style: solid;
+	outline: 1.5px solid #8d8d8d;
+	outline-offset: 1px;
+	-moz-tab-size: 4;
+	  -o-tab-size: 4;
+	     tab-size: 4;
+	text-align: left;
+	border-radius: 8px;
+	display: block;
+	font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+	font: normal 12px/22px Consolas,courier, Monospace !important;
+	background-color: #141414;
+	background-image: -webkit-repeating-linear-gradient(top, #1b1b1b 0px, #1b1b1b 22px, #141414 22px, #141414 44px);
+	background-image: repeating-linear-gradient(top, #1b1b1b 0px, #1b1b1b 22px, #141414 22px, #141414 44px);
+	padding: 0 1em;
+	margin: 0;
+	margin-bottom: 10px;
+	overflow: auto;
+	width: -webkit-fit-content;
+	width: -moz-fit-content;
+	width: fit-content;
+}
+
+.token.special {
+	color: #cd70d6;
+}
+.token.comment {
+	color: #5e7671;
+	font-style: italic
+}
+.token.variable {
+	/* color: #aa7ee1 */
+	color: #ce9178;
+}
+.token.keyword {
+	color: #569cd6
+}
+.token.function {
+	color: #9cdcfe;
+}
+.token.word {
+	color: #ffffff;
+}
+
+h3 {
+	position: absolute;
+	top: 100%;
+}
+
+.code-wrapper {
+	position: absolute;
+	top: 104%;
+	display: flex;
+	flex-direction: row;
+}
+.explanation {
+	padding-left: 10px;
+}
+
+.js-songs-code {
+	height: 0;
+    top: 100%;
+    left: 30%;
+    width: 40%;
+    opacity: 0;
+    transform: translate3d(0, -15px, 0);
+    transition: all 0.3s linear;
+    font-size: 1.0625rem;
+    font-weight: 500;
+    line-height: 1.4;
+    visibility: hidden;
+    pointer-events: none;
+}
+.js-songs:hover + .js-songs-code {
+    opacity: 1;
+    margin-top: 10px;
+    visibility: visible;
+    transform: translate3d(0, 0, 0);
+	height: -webkit-fit-content;
+	height: -moz-fit-content;
+	height: fit-content;
+}

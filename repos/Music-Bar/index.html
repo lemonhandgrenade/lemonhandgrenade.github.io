@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+		<link rel="stylesheet" href="css/style.css">
+		<title>Document</title>
+	</head>
+	<body>
+		<div class="music-wrapper" data-songs="Don't Swallow The Cap,Loafers,Welcome To The Family" data-music_dir="music" data-image_dir="images">
+			<div class="music-info">
+				<h4 id="title">Title</h4>
+				<div class="progress-wrapper">
+					<div class="progress"></div>
+					<canvas id="audio_visual" height="500" width="500"></canvas>
+				</div>
+			</div>
+
+			<audio src="music/Gyalchester.mp3" id="audio"></audio>
+
+			<div class="img-wrapper">
+				<img src="images/Gyalchester.jpg" alt="music-cover" id="cover">
+			</div>
+
+			<div class="navigation">
+				<button id="previous" class="action-btn">
+					<i class="fas fa-backward"></i>
+				</button>
+				<button id="play" class="action-btn action-btn-big">
+					<i class="fas fa-play "></i>
+				</button>
+				<button id="next" class="action-btn">
+					<i class="fas fa-forward"></i>
+				</button>
+			</div>
+		</div>
+
+		<svg version="1.1" id="svg-arrow-down" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 22 35" style="enable-background:new 0 0 22 35;" xml:space="preserve">
+			<polygon class="arrow" style="fill:#ffffff;" points="20.58,11.584 12.004,20.158 12.004,0 9.996,0 9.996,20.158 1.42,11.584 0,13.004 11,24 22,13.004 "></polygon>
+		</svg>
+
+		<h3>HTML</h3>
+		<div class="code-wrapper">
+			<pre rel="Html" class="code-block  language-html" data-line=""><code markup="tt" class=" language-html"><span>&#60;!-- HTML --&#62;</span>
+<span><</span><span class="token keyword">div</span> <span class="token function">class=</span><span class="token variable">"music-wrapper"</span> <span class="token function">data-songs=</span><span class="token variable songs-highlighting">"Don't Swallow The Cap,Loafers,Welcome To The Family"</span> <span class="token function">data-music_dir=</span><span class="token variable">"music"</span> <span class="token function">data-image_dir=</span><span class="token variable">"images"</span><span>></span> 
+	<span><</span><span class="token keyword">div</span> <span class="token function">class=</span><span class="token variable">"music-info"</span><span>></span>
+		<span><</span><span class="token keyword">h4</span> <span class="token function"><span class="token function">id=</span></span><span class="token variable">"title"</span><span>></span><span class="token word">Title</span><span><</span>/<span class="token keyword">h4</span><span>></span>
+		<span><</span><span class="token keyword">div</span> <span class="token function">class=</span><span class="token variable">"progress-wrapper"</span><span>></span>
+			<span><</span><span class="token keyword">div</span> <span class="token function">class=</span><span class="token variable">"progress"</span><span>></span><span><</span>/<span class="token keyword">div</span><span>></span>
+			<span><</span><span class="token keyword">canvas</span> <span class="token function">id=</span><span class="token variable">"audio_visual"</span> <span class="token function">height=</span><span class="token variable">"500"</span> <span class="token function">width=</span><span class="token variable">"500"</span><span>></span><span><</span>/<span class="token keyword">canvas</span><span>></span>
+		<span><</span>/<span class="token keyword">div</span><span>></span>
+	<span><</span>/<span class="token keyword">div</span><span>></span>
+
+	<span><</span><span class="token keyword">audio</span> <span class="token function">src=</span><span class="token variable">"music/Don't Swallow The Cap.mp3"</span> <span class="token function">id=</span><span class="token variable">"audio"</span><span>></span><span><</span>/<span class="token keyword">audio</span><span>></span>
+
+	<span><</span><span class="token keyword">div</span> <span class="token function">class=</span><span class="token variable">"img-wrapper"</span><span>></span>
+		<span><</span><span class="token keyword">img</span> <span class="token function">src=</span><span class="token variable">"images/Don't Swallow The Cap.jpg"</span> <span class="token function">alt=</span><span class="token variable">"music-cover"</span> <span class="token function">id=</span><span class="token variable">"cover"</span><span>></span>
+	<span><</span>/<span class="token keyword">div</span><span>></span>
+
+	<span><</span><span class="token keyword">div</span> <span class="token function">class=</span><span class="token variable">"navigation"</span><span>></span>
+		<span><</span><span class="token keyword">button</span> <span class="token function">id=</span><span class="token variable">"previous"</span> <span class="token function">class=</span><span class="token variable">"action-btn"</span><span>></span>
+			<span><</span><span class="token keyword">i</span> <span class="token function">class=</span><span class="token variable">"fas fa-backward"</span><span>></span><span><</span>/<span class="token keyword">i</span><span>></span>
+		<span><</span>/<span class="token keyword">button</span><span>></span>
+		<span><</span><span class="token keyword">button</span> <span class="token function">id=</span><span class="token variable">"play"</span> <span class="token function">class=</span><span class="token variable">"action-btn action-btn-big"</span><span>></span>
+			<span><</span><span class="token keyword">i</span> <span class="token function">class=</span><span class="token variable">"fas fa-play </span>"<span>></span><span><</span>/<span class="token keyword">i</span><span>></span>
+		<span><</span>/<span class="token keyword">button</span><span>></span>
+		<span><</span><span class="token keyword">button</span> <span class="token function">id=</span><span class="token variable">"next"</span> <span class="token function">class=</span><span class="token variable">"action-btn"</span><span>></span>
+			<span><</span><span class="token keyword">i</span> <span class="token function">class=</span><span class="token variable">"fas fa-forward"</span><span>></span><span><</span>/<span class="token keyword">i</span><span>></span>
+		<span><</span>/<span class="token keyword">button</span><span>></span>
+	<span><</span>/<span class="token keyword">div</span><span>></span>
+<span><</span>/<span class="token keyword">div</span><span>></span></code></pre>
+			<div class="explanation">
+				<div class="songs-highlight" onmouseover="document.querySelector('.songs-highlighting').style.backgroundColor='#7a7aba';document.querySelector('.songs-highlighting').style.color='#000';" onmouseleave="document.querySelector('.songs-highlighting').style.backgroundColor='#141414';document.querySelector('.songs-highlighting').style.color='#aa7ee1';">
+					The main music wrapper has a dataset called songs.<br></div>
+				<div class="js-songs">It's a string based array of song names with a comma acting as a delimiter.	<br></div>
+				<div class="js-songs-code">
+					<pre rel="JS" class="code-block  language-js" data-line=""><code markup="tt" class=" language-js"><span>// JS</span>
+<span class="token keyword">const </span><span class="token word">songs = musicWrapper.dataset.songs.split</span>(<span class="token variable">','</span>)</code></pre>
+				</div><br>
+				<div>There's also the data tags music_dir and image_dir.	<br></div>
+				<div>These contain the directory to search when looking for the mp3s and jpgs.	<br></div>
+				<div class="js-songs">This happens in the <b>loadSong</b> function.	<br></div>
+				<div class="js-songs-code">
+					<pre rel="JS" class="code-block  language-js" data-line=""><code markup="tt" class=" language-js"><span>// JS</span>
+<span class="token keyword">function </span><span class="token word">loadSong</span>(<span class="token word">song</span>) {
+	<span class="token word">title.innerText = song</span>
+	<span class="token word">audio.src = </span><span class="token variable">`</span><span class="token special">${</span><span class="token word">musicDir</span><span class="token special">}</span><span class="token variable">/</span></span><span class="token special">${</span><span class="token word">song</span><span class="token special">}</span><span class="token variable">.mp3`</span>
+	<span class="token word">cover.src = </span><span class="token variable">`</span><span class="token special">${</span><span class="token word">imageDir</span><span class="token special">}</span><span class="token variable">/</span></span><span class="token special">${</span><span class="token word">song</span><span class="token special">}</span><span class="token variable">.jpg`</span>
+}
+</code></pre>
+				</div><br>
+				<div>music-info is a relatively simple group.<br></div>
+				<div>The only real notable things are the div class progress and the canvas with id audio_visual.<br></div>
+				<div>progress is the progress bar updated in the audio listed later.<br></div>
+				<div>The canvas tagged audio_visual is the waveform visualiser seen underneath the progress bar.</div><br>
+				<div>audio is simply the audio context for the player.<br></div>
+				<div class="js-songs">It uses multiple event listeners.</div>
+				<div class="js-songs-code">
+					<pre rel="JS" class="code-block  language-js" data-line=""><code markup="tt" class=" language-js"><span>// JS</span>
+<span class="token word">audio.addEventListener</span>(<span class="token variable">'timeupdate'</span><span class="token variable">,</span> <span class="token special">(</span>e<span class="token special">)</span> <span class="token keyword">=></span> <span class="token special">{</span>...
+<span class="token word">audio.addEventListener</span>(<span class="token variable">'ended'</span><span class="token variable">,</span> <span class="token special">(</span><span class="token special">)</span> <span class="token keyword">=></span> <span class="token special">{</span>...
+<span class="token word">audio.addEventListener</span>(<span class="token variable">'pause'</span><span class="token variable">,</span> <span class="token special">(</span><span class="token special">)</span> <span class="token keyword">=></span> <span class="token special">{</span><span class="token word">pauseSong()</span><span class="token special">}</span>)
+<span class="token word">audio.addEventListener</span>(<span class="token variable">'play'</span><span class="token variable">,</span> <span class="token special">(</span><span class="token special">)</span> <span class="token keyword">=></span> <span class="token special">{</span><span class="token word">playSong()</span><span class="token special">}</span>)
+</code></pre>
+				</div><br>
+				<div>I believe the img-wrapper and navigation are pretty self explanatory.</div>
+			</div>
+		</div>
+		<script src="index.js"></script>
+	</body>
+</html>
