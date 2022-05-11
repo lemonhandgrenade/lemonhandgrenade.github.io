@@ -113,7 +113,7 @@ body {
 	height: 4.25px;
 	top: 10px;
 	width: 0;
-	transition: width 0.1s linear;
+	transition: width 0.05s linear;
 }
 
 #audio_visual {
