@@ -34,7 +34,7 @@ async function getContent(s) {
 
 				$(
 					`<div class="img-wrapper">
-						<img src="${image}" class="img-content">
+						<img src="${image}" class="img-content" loading="lazy">
 						<div class="content fade">${content.data.children[i].data.title}</div>
 					</div>`
 				).appendTo(".grid")
