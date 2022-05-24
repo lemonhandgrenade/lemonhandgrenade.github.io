@@ -27,7 +27,7 @@ async function getContent(s) {
 		.then((content) => {
 			for (i = 0; i < content.data.children.length; i++) {
 
-				image = content.data.children[i].data.url_overridden_by_dest;
+				image = content.data.children[i].data.url;
 				nsfw = content.data.children[i].data.over_18 && !seeNsfw
 				if (!image.includes("i.redd.it") || nsfw)
 					continue
