@@ -2,23 +2,15 @@ document.addEventListener('readystatechange', async event => {
 	if (event.target.readyState != "complete") return;
 
 	cardAdders = document.getElementsByClassName("card-adder")
-
-	const collection = document.getElementsByClassName("dropdown-content");
-
-	entries = "";
-
 	const cards = await fetch('./tokens.json').then(response => response.json())
-
-	for (const card of cards.data) {
-		entries += `<a onclick="AddCard(__Player__,'${card.name.replaceAll('\'','\\\'')}','${card.png}')">${card.name} (${card.power}/${card.toughness})</a>\n`
-	}
-	for (let i = 0; i < collection.length; i++) {
-		
+	entries = "";
+	for (const card of cards.data) {entries += `<a onclick="AddCard(__Player__,'${card.name.replaceAll('\'','\\\'')}','${card.png}')">${card.name} (${card.power}/${card.toughness})</a>\n`}
+	const collection = document.getElementsByClassName("dropdown-content");
+	for (let i=0;i<collection.length;i++) {
 		collection[i].innerHTML += `<input type="text" class="search" placeholder="Search.." id="SearchInput${i+1}" onkeyup="SearchFunction(${i+1})">`;
 		collection[i].innerHTML += entries.replaceAll('__Player__', i+1);
 	}
 });
-
 function HideDropdowns() {
 	dropdowns = document.getElementsByClassName("dropdown-content");
 	for (i = 0; i < dropdowns.length; i++) {
@@ -43,6 +35,7 @@ function RemoveCard(ID) {
 	card.parentNode.removeChild(card);
 }
 function TapCard(ID) { document.getElementById(ID).classList.toggle('tapped'); }
+function FlipPlayer() { document.getElementById("Player1").classList.toggle('flipped'); }
 function SearchFunction(Player) {
 	var input, filter, ul, li, a, i;
 	input = document.getElementById("SearchInput" + Player);
